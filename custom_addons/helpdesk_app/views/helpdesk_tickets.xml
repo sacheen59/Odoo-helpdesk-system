@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- list view start  -->
+    <record id="helpdesk_app_tickets_view_list" model="ir.ui.view">
+        <field name="name">helpdesk_app.tickets.view.list</field>
+        <field name="model">helpdesk_app.tickets</field>
+        <field name="arch" type="xml">
+            <list string="">
+                <field name="id" width="20px" />
+                <field name="title" />
+                <field name="priority" widget="priority" />
+                <field name="type" />
+                <field name="assigned_team" />
+                <field name="assigned_team_id" widget="many2one_avatar" />
+                <field name="reported_by" widget="many2one_avatar" />
+                <field name="reported_date" />
+            </list>
+        </field>
+    </record>
+
+    <!-- list view end  -->
+
+    <!-- form view start  -->
+
+    <record id="helpdesk_app_tickets_view_form" model="ir.ui.view">
+        <field name="name">helpdesk_app.tickets.view.form</field>
+        <field name="model">helpdesk_app.tickets</field>
+        <field name="arch" type="xml">
+            <form string="Tickets form">
+                <header>
+                    <button name="action_open_ticket_stage_remark_wizard"
+                        string="Send to Progress" class="oe_highlight"
+                        type="object" data-hotkey="w" title="Send to In Progress"
+                        invisible="stage_name != 'Draft'"
+                        groups="helpdesk_app.group_helpdesk_manager,,helpdesk_app.group_helpdesk_admin"
+                        context="{'ticket_id': id, 'current_stage_id' : stage_id, 'new_stage_id': 'Progress'}" />
+
+                    <button name="action_open_ticket_stage_remark_wizard"
+                        string="Send to Completed" class="oe_highlight"
+                        type="object" data-hotkey="w" title="Send to Completed"
+                        invisible="stage_name != 'Progress'"
+                        groups="helpdesk_app.group_helpdesk_manager,,helpdesk_app.group_helpdesk_admin"
+                        context="{'ticket_id': id, 'current_stage_id' : stage_id, 'new_stage_id': 'Completed'}" />
+
+                    <button name="action_open_ticket_stage_remark_wizard"
+                        string="Cancel" class="btn-secondary"
+                        type="object" data-hotkey="w" title="Send to Cancelled"
+                        invisible="stage_name == 'Cancelled' or stage_name == 'Completed'"
+                        groups="helpdesk_app.group_helpdesk_manager,,helpdesk_app.group_helpdesk_admin"
+                        context="{'ticket_id': id, 'current_stage_id' : stage_id, 'new_stage_id': 'Cancelled'}" />
+
+                    <button name="action_restore"
+                        string="Restore" class="oe_highlight"
+                        type="object" data-hotkey="w" title="Restore"
+                        groups="helpdesk_app.group_helpdesk_manager,,helpdesk_app.group_helpdesk_admin"
+                        invisible="stage_name != 'Cancelled'" context="{'cancelling':True}" />
+
+                    <field name="stage_id" widget="statusbar"
+                        options="{'clickable': True}"
+                        readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Completed" bg_color="text-bg-success"
+                        invisible="stage_name != 'Completed'" />
+                    <widget name="web_ribbon" title="Cancelled" bg_color="text-bg-danger"
+                        invisible="stage_name != 'Cancelled'" />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="title"
+                                readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <!-- <field name="todo_id" readonly="1" /> -->
+                            <field name="category_id"
+                                readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />
+                            /> <field name="type"
+                                readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />
+                            <field
+                                name="query"
+                                readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />
+                            <field
+                                name="description"
+                                readonly="stage_name == 'Completed' or stage_name == 'Cancelled'"
+                            />
+                            <field
+                                name="priority" widget="priority"
+                                readonly="stage_name == 'Completed' or stage_name == 'Cancelled'"
+                            />
+                            <field
+                                name="tag_ids" optional="hide" widget="many2many_tags"
+                                options="{'color_field': 'color'}"
+                                readonly="stage_name == 'Completed' or stage_name == 'Cancelled'"
+                            />
+
+                        </group>
+                        <group>
+                            <field name="email"
+                                options="{'no_create': True, 'no_edit': True}"
+                                readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />
+                            <field name="phone"
+                                options="{'no_create': True, 'no_edit': True}"
+                                readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />
+                            <field name="reported_by" widget="many2one_avatar"
+                                options="{'no_create': True, 'no_edit': True}"
+                                readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />
+                            <field name="reported_date"
+                                readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />
+                            <field name="assigned_team"
+                                options="{'no_create': True, 'no_edit': True}"
+                                readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />
+                            <field name="assigned_team_id"
+                                widget="many2one_avatar"
+                                options="{'no_create': True, 'no_edit': True}"
+                                readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />
+
+
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Remarks" name="ticket_remarks">
+                            <field name="remarks_ids" readonly="1">
+                                <list string="Tasks">
+                                    <field name="remark" />
+                                    <field name="remark_file" widget="binary" />
+                                    <field name="old_stage" string="From" />
+                                    <field name="new_stage" string="To" />
+                                </list>
+                                <form string="Remarks">
+                                    <sheet>
+                                        <group>
+                                            <field name="remark" />
+                                            <field name="remark_file" widget="binary"
+                                                filename="remark_file_filename" />
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter reload_on_post="True" />
+            </form>
+
+        </field>
+    </record>
+    <!-- form view end  -->
+
+    <!-- kanban view start -->
+    <record id="helpdesk_app_tickets_view_kanban" model="ir.ui.view">
+        <field name="name">helpdesk_app.tickets.view.kanban</field>
+        <field name="model">helpdesk_app.tickets</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column o_opportunity_kanban" default_group_by="stage_id"
+                records_draggable="False">
+                <templates>
+                    <t t-name="menu">
+                        <t t-if="widget.editable">
+                            <a role="menuitem" type="open" class="dropdown-item">Edit</a>
+                        </t>
+                        <t t-if="widget.deletable">
+                            <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                        </t>
+                    </t>
+
+                    <t t-name="card" class="p-2 rounded">
+                        <field class="fw-bold fs-2 text-capitalize" name="title" />
+
+                        <field name="type" class="mb-1 text-primary fw-bold fs-4" />
+                        <t t-if="record.assigned_team">
+                            <field name="assigned_team" class="mb-1 text-muted fw-bold" />
+
+                        </t>
+                        <t t-else="">
+                            <field name="assigned_team_id" class="mb-1 text-muted fw-bold" />
+                        </t>
+                        <field name="query" class="mb-1 text-muted" />
+
+                        <div class="my-1">
+                            <field name="tag_ids" widget="many2many_tags"
+                                options="{'color_field': 'color'}" />
+                        </div>
+
+
+                        <footer class="pt-1">
+                            <div class="d-flex mt-auto align-items-center">
+                                <field name="priority" widget="priority"
+                                    class="me-2" />
+                                <!-- <field name="activity_ids" widget="kanban_activity" /> -->
+                            </div>
+                            <field name="assigned_team_id" widget="many2one_avatar_user"
+                                class="ms-auto" />
+                        </footer>
+                    </t>
+
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <!-- kanban view end -->
+
+    <!-- search view start  -->
+    <record id="helpdesk_app_tickets_view_search" model="ir.ui.view">
+        <field name="name">helpdesk_app.tickets.view.search</field>
+        <field name="model">helpdesk_app.tickets</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="title" />
+                <field name="query" />
+                <field name="category_id" />
+                <separator>
+                    <field name="create_date" />
+                </separator>
+
+                <filter string="Creation Date" name="filter_creation_date" date="create_date"
+                    default_period="month" />
+            </search>
+        </field>
+    </record>
+    <!-- search view end -->
+
+    <!-- calender view start -->
+    <!-- <record id="view_helpdesk_tickets_calendar" model="ir.ui.view">
+        <field name="name">helpdesk_app.tickets.calendar</field>
+        <field name="model">helpdesk_app.tickets</field>
+        <field name="arch" type="xml">
+            <calendar string="Helpdesk Tickets"
+                date_start="reported_date"
+                date_stop="reported_date"
+                color="priority">
+                <field name="title" />
+                <field name="email" />
+                <field name="assigned_team" />
+                <field name="priority" />
+                <field name="reported_by" />
+                <field name="query" />
+            </calendar>
+        </field>
+    </record> -->
+
+    <record id="view_helpdesk_app_tickets_calendar" model="ir.ui.view">
+        <field name="name">helpdesk_app.tickets.calendar</field>
+        <field name="model">helpdesk_app.tickets</field>
+        <field name="arch" type="xml">
+            <calendar string="Helpdesk Tickets" create="0" mode="month"
+                date_start="reported_date" color="priority">
+                <field name="title" />
+                <field name="email" />
+                <field name="assigned_team" />
+                <field name="priority" />
+                <field name="reported_by" />
+                <field name="query" />
+            </calendar>
+        </field>
+    </record>
+
+    <!-- calender view end -->
+
+    <!-- pivot view start  -->
+    <!-- <record id="view_helpdesk_app_tickets_pivot" model="ir.ui.view">
+        <field name="name">helpdesk.app.tickets.pivot</field>
+        <field name="model">helpdesk_app.tickets</field>
+        <field name="arch" type="xml">
+            <pivot string="Helpdesk Tickets" sample="1">
+                <field name="category_id" type="row" string="Ticket Category" />
+                <field name="priority" type="column" string="Priority Level" />
+                <field name="id" aggregation="count" string="Total Tickets" />
+                <field name="assigned_team" type="row" string="Assigned Team" />
+                <field name="assigned_team_id" string="Assigned Member" />
+                <field name="stage_id" string="Current Stage" />
+                <field name="reported_by" string="Reported By" />
+                <field name="reported_date" aggregation="min" string="Earliest Reported Date" />
+                <field name="reported_date" aggregation="max" string="Latest Reported Date" />
+                <field name="priority" aggregation="avg" string="Average Priority" />
+            </pivot>
+        </field>
+    </record> -->
+
+    <!-- pivot view end  -->
+
+    <!-- graph veiw start  -->
+    <record id="view_helpdesk_app_tickets_graph" model="ir.ui.view">
+        <field name="name">helpdesk_app.tickets.graph</field>
+        <field name="model">helpdesk_app.tickets</field>
+        <field name="arch" type="xml">
+            <graph string="Helpdesk Tickets" type="bar" sample="1">
+                <field name="category_id" type="row" string="Ticket Category" />
+            </graph>
+        </field>
+    </record>
+    <!-- graph view end  -->
+
+    <!-- gird view start -->
+
+    <!-- grid view end  -->
+
+    <record id="helpdesk_app_tickets_action" model="ir.actions.act_window">
+        <field name="name">Tickets</field>
+        <field name="res_model">helpdesk_app.tickets</field>
+        <field name="view_mode">kanban,list,form,calendar,pivot,graph,activity</field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="portal_support_form_template" name="Support Ticket Form">
+        <t t-call="website.layout">
+            <div class="container">
+                <h2 class="text-center text-muted my-2">Ticket Form</h2>
+                <div class="d-flex justify-content-center">
+                    <div class="col-md-3 my-3 shadow rounded p-3">
+                        <form action="/submit_ticket" method="post">
+                            <input type="hidden" name="csrf_token"
+                                t-att-value="request.csrf_token()" />
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="username"
+                                    name="username"
+                                    placeholder="John Doe" />
+                                <label for="username">Name</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="email" name="email"
+                                    placeholder="name@example.com" />
+                                <label for="email">Email address</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="phone" class="form-control" id="phone" name="phone"
+                                    placeholder="" />
+                                <label for="phone">Phone</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="tel" class="form-control" id="address" name="address"
+                                    placeholder="" />
+                                <label for="address">Address</label>
+                            </div>
+
+
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control"
+                                    id="query" name="query" placeholder="" style="height:50px;"></textarea>
+                                <label for="query">Query</label>
+                            </div>
+
+                            <input class="btn btn-primary w-100" type="submit" value="Submit" />
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </t>
+    </template>
+</odoo>

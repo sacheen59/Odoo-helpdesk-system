@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="todo_app_task_mark_complete_wizard_form" model="ir.ui.view">
+        <field name="name">todo_app.task_mark.complete.wizard.form</field>
+        <field name="model">todo_app.task.mark.complete.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <group>
+                    <field name="task_id" invisible='1' />
+                    <field name="remarks" />
+                </group>
+                <footer>
+                    <button string="Confirm" type="object" name="action_confirm" class="btn-primary" />
+                    <button string="Cancel" special="cancel" class="btn-secondary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_todo_app_task_mark_complete_wizard" model="ir.actions.act_window">
+        <field name="name">Mark as complete</field>
+        <field name="res_model">todo_app.task.mark.complete.wizard</field>
+        <field name="view_mode">form</field>
+        <field name='context'>{'default_task_id':active_id}</field>
+        <field name="view_id" ref="todo_app_task_mark_complete_wizard_form"></field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

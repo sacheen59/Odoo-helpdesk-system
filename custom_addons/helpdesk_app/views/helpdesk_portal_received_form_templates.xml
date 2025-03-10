@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="portal_support_form_received_template" name="Ticket form received">
+        <t t-call="website.layout">
+            <div class="container">
+                <h2 class="text-center text-muted my-2">Form submitted successfully</h2>
+                <h3 class="text-center text-muted my-2">Thank you!!!</h3>
+            </div>
+        </t>
+    </template>
+</odoo>

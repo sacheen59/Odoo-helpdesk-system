@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="helpdesk_app_tickets_view_form_inherit_helpdesk_app" model="ir.ui.view">
+        <field name="name">helpdesk_todo.helpdesk_ticket.view.form.inherit</field>
+        <field name="model">helpdesk_app.tickets</field>
+        <field name="inherit_id" ref="helpdesk_app.helpdesk_app_tickets_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//form/header/button" position="before">
+                <button name="%(helpdesk_todo.action_open_helpdesk_todo_create_todo_wizard)d"
+                    type="action" string="Create Todo" class="oe_highlight"
+                    groups="helpdesk_app.group_helpdesk_manager,helpdesk_app.group_helpdesk_admin"
+                    invisible="type == 'external' or stage_name == 'Cancelled' or stage_name == 'Completed'" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

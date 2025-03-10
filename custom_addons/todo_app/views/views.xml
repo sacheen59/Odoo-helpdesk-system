@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="todo_app.list">
+      <field name="name">todo_app list</field>
+      <field name="model">todo_app.todo_app</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </list>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="todo_app.action_window">
+      <field name="name">todo_app window</field>
+      <field name="res_model">todo_app.todo_app</field>
+      <field name="view_mode">list,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="todo_app.action_server">
+      <field name="name">todo_app server</field>
+      <field name="model_id" ref="model_todo_app_todo_app"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "list,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="todo_app" id="todo_app.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="todo_app.menu_1" parent="todo_app.menu_root"/>
+    <menuitem name="Menu 2" id="todo_app.menu_2" parent="todo_app.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="todo_app.menu_1_list" parent="todo_app.menu_1"
+              action="todo_app.action_window"/>
+    <menuitem name="Server to list" id="todo_app" parent="todo_app.menu_2"
+              action="todo_app.action_server"/>
+-->
+  </data>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="helpdesk_crm_helpdesk_tickets_view_form_inherit" model="ir.ui.view">
+        <field name="name">helpdesk_crm.helpdesk_tickets.view.form.inherit</field>
+        <field name="model">helpdesk_app.tickets</field>
+        <field name="inherit_id" ref="helpdesk_app.helpdesk_app_tickets_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//form/header/button" position="before">
+                <button name="%(helpdesk_crm.action_open_helpdesk_crm_create_crm_wizard)d"
+                    type="action" string="Generate Lead" class="oe_highlight"
+                    groups="helpdesk_app.group_helpdesk_manager,helpdesk_app.group_helpdesk_admin"
+                    invisible="type == 'internal' or stage_name == 'Completed' or stage_name ==
+                'Cancelled'" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

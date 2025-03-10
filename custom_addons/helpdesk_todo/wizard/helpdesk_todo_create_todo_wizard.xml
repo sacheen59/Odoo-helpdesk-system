@@ -1,0 +1,30 @@
+<odoo>
+    <record id="view_helpdesk_todo_create_todo_wizard_form" model="ir.ui.view">
+        <field name="name">helpdesk_todo_create_todo_wizard_form</field>
+        <field name="model">helpdesk_todo.create.todo.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Send Ticket">
+                <field name="ticket_id" invisible='1' />
+                <field name="todo_id" invisible='1' />
+                <group>
+                    <field name="ticket_name" />
+                    <field name="ticket_description" />
+                    <field name="ticket_query" />
+                </group>
+                <footer>
+                    <button string="Confirm" type="object" name="action_confirm" class="btn-primary" />
+                    <button string="Cancel" special="cancel" class="btn-secondary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_open_helpdesk_todo_create_todo_wizard" model="ir.actions.act_window">
+        <field name="name">Send Ticket</field>
+        <field name="res_model">helpdesk_todo.create.todo.wizard</field>
+        <field name="view_mode">form</field>
+        <field name='context'>{'default_ticket_id': active_id}</field>
+        <field name="view_id" ref="view_helpdesk_todo_create_todo_wizard_form"></field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- root menu start  -->
+    <menuitem
+        id="helpdesk_menu_root"
+        name="Help Desk"
+        sequence="1">
+
+        <!-- tickets menu start  -->
+        <menuitem
+            id="helpdesk_app_tickets_menu"
+            name="Tickets"
+            action="helpdesk_app.helpdesk_app_tickets_action"
+            sequence="10" />
+        <!-- tickets menu end  -->
+
+        <!-- report menu start  -->
+
+        <menuitem
+            id="helpdesk_app_report_menu"
+            name="Report"
+            action="helpdesk_app.action_open_report_wizard"
+            sequence="10" />
+
+        <!-- report menu end  -->
+
+        <!-- configuration menu start  -->
+        <menuitem
+            id="configuration_menu"
+            name="Configuration"
+            groups="helpdesk_app.group_helpdesk_admin"
+            sequence="10">
+
+            <menuitem
+                id="helpdesk_tickets_category_menu"
+                name="Tickets Category"
+                action="helpdesk_app.helpdesk_app_tickets_category_action"
+                sequence="10" />
+
+            <menuitem
+                id="helpdesk_tickets_tag_menu"
+                name="Tag"
+                action="helpdesk_app.helpdesk_app_tickets_tag_action"
+                sequence="10" />
+            <menuitem
+                id="helpdesk_team_menu"
+                name="Teams"
+                action="helpdesk_app.helpdesk_app_helpdesk_team_action"
+                sequence="10" />
+            <menuitem
+                id="helpdesk_ticket_stage_menu"
+                name="Ticket Stages"
+                action="helpdesk_app.helpdesk_app_ticket_stage_action"
+                sequence="10" />
+
+        </menuitem>
+        <!-- configuration menu end  -->
+    </menuitem>
+
+</odoo>

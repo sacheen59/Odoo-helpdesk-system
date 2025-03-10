@@ -1,0 +1,28 @@
+<odoo>
+    <record id="view_ticket_stage_remark_form" model="ir.ui.view">
+        <field name="name">helpdesk_app.ticket.stage.remark.form</field>
+        <field name="model">ticket_stage.remark.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add Remark">
+                <group>
+                    <field name="ticket_id" invisible='1' />
+                    <field name="remarks" />
+                    <field name="remarks_file" />
+                </group>
+                <footer>
+                    <button string="Confirm" type="object" name="action_confirm" class="btn-primary" />
+                    <button string="Cancel" special="cancel" class="btn-secondary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_open_remark_wizard" model="ir.actions.act_window">
+        <field name="name">Add Remark</field>
+        <field name="res_model">ticket_stage.remark.wizard</field>
+        <field name="view_mode">form</field>
+        <field name='context'>{'default_ticket_id': active_id}</field>
+        <field name="view_id" ref="view_ticket_stage_remark_form"></field>
+        <field name="target">new</field>
+    </record>
+</odoo>

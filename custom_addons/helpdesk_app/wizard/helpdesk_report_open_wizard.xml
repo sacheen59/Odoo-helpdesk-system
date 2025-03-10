@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_helpdesk_report_open_wizard_form" model="ir.ui.view">
+        <field name="name">helpdesk_app.report.open.wizard.form</field>
+        <field name="model">helpdesk_app.report.open.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="start_date" />
+                    <field name="end_date" />
+                </group>
+                <footer>
+                    <button string="Generate Report" type="object" name="action_generate_report"
+                        class="oe_highlight" />
+                    <button string="Cancel" special="cancel" class="btn-secondary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_open_report_wizard" model="ir.actions.act_window">
+        <field name="name">Open Report Wizard</field>
+        <field name="res_model">helpdesk_app.report.open.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_helpdesk_report_open_wizard_form"></field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

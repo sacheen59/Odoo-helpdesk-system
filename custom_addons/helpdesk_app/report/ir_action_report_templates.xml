@@ -1,0 +1,72 @@
+<odoo>
+    <template id="helpdesk_ticket_report_template">
+        <t t-call="web.basic_layout">
+            <div class="page">
+                <h2 style="text-align: center; font-weight: bold;">Help Desk Ticket Report</h2>
+                <div style="text-align: center; margin-bottom: 20px;">
+                </div>
+                <div>From: <t t-esc="start_date" /></div>
+                <div>To: <t t-esc="end_date" /></div>
+
+
+                <p>Total Tickets: <t t-esc="total_ticket_count" /></p>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Stage Name</th>
+                            <th>Total Tickets</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="stage_counts" t-as="stage">
+                            <tr>
+                                <td t-esc="stage['stage_name']" />
+                                <td t-esc="stage['ticket_count']" />
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Reported Date</th>
+                            <th>Stage</th>
+                            <th>Type</th>
+                            <th>Assigned To Team</th>
+                            <th>Team Leader</th>
+                            <th>Team Member name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="docs" t-as="ticket">
+                            <tr>
+                                <td>
+                                    <span t-field="ticket.title" />
+                                </td>
+                                <td>
+                                    <span t-field="ticket.reported_date" />
+                                </td>
+                                <td>
+                                    <span t-field="ticket.stage_name" />
+                                </td>
+                                <td>
+                                    <span t-field="ticket.type" />
+                                </td>
+                                <td>
+                                    <span t-field="ticket.assigned_team.name" />
+                                </td>
+                                <td>
+                                    <span t-field="ticket.assigned_team.team_leader" />
+                                </td>
+                                <td>
+                                    <span t-field="ticket.assigned_team_id.name" />
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+</odoo>

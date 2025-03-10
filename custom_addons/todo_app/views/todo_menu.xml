@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="todo_menu_root"
+        name="Todo App"
+        sequence="10"
+    >
+        <menuitem
+            id="todo_menu"
+            name="Todo"
+            action="todo_app_todo_action"
+            sequence="10" />
+
+        <menuitem
+            id="configuration_menu"
+            name="Configuration"
+            sequence="10"
+            groups="todo_app.group_todo_admin"
+        >
+            <menuitem
+                id="todo_settings_menu"
+                name="Settings"
+                action="todo_app.todo_app_config_settings_action"
+                sequence="4" />
+            <menuitem
+                id="todo_category_menu"
+                name="Todo Category"
+                action="todo_app.todo_app_todo_category_action"
+                sequence="3" />
+            <menuitem
+                id="todo_tag_menu"
+                name="Todo Tag"
+                action="todo_app.todo_app_todo_tag_action"
+                sequence="2" />
+            <menuitem
+                id="todo_stage_menu"
+                name="Todo Stages"
+                action="todo_app.todo_app_todo_stage_action"
+                sequence="1" />
+        </menuitem>
+
+    </menuitem>
+
+
+</odoo>

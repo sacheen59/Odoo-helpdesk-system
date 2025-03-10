@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <odoo>
+        <record id="view_helpdesk_crm_create_crm_wizard_form" model="ir.ui.view">
+            <field name="name">helpdesk_crm_create_crm_wizard_form</field>
+            <field name="model">helpdesk_crm.create.crm.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create CRM">
+                    <field name="ticket_id" invisible='1' />
+                    <!-- <field name="todo_id" invisible='1' /> -->
+                    <group>
+                        <field name="ticket_name" />
+                        <field name="contact_name" />
+                        <field name="contact_email" />
+                        <field name="contact_phone" />
+                    </group>
+                    <footer>
+                        <button string="Confirm" type="object" name="action_confirm"
+                            class="btn-primary" />
+                        <button string="Cancel" special="cancel" class="btn-secondary" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_open_helpdesk_crm_create_crm_wizard" model="ir.actions.act_window">
+            <field name="name">Create CRM</field>
+            <field name="res_model">helpdesk_crm.create.crm.wizard</field>
+            <field name="view_mode">form</field>
+            <field name='context'>{'default_ticket_id': active_id}</field>
+            <field name="view_id" ref="view_helpdesk_crm_create_crm_wizard_form"></field>
+            <field name="target">new</field>
+        </record>
+    </odoo>
+</odoo>
