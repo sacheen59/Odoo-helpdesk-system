@@ -35,6 +35,7 @@ Long description of module's purpose
         'demo/demo.xml',
     ],
     'installable': True,
-    'application':True
+    'application':True,
+    'auto_install':False,
 }
 

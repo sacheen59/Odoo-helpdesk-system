@@ -26,6 +26,7 @@
         'security/ir.model.access.csv',
 
         'data/todo_stage_data.xml',
+        'data/ir_cron_data.xml',
 
         'wizard/task_mark_complete_wizard.xml',
 
@@ -42,5 +43,8 @@
     'demo': [
         'demo/demo.xml',
     ],
+    'installable': True,
+    'application': True,
+    'images':['static/description/icon.png',] ,
 }
 

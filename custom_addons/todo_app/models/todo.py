@@ -77,8 +77,11 @@ class Todo(models.Model):
 
     @api.onchange('progress')
     def onchange_progress(self):
+        complete_stage_id = self.env.ref('todo_app.stage_4').id
         if self.progress == 100:
-            self.states = 'completed'
+            self.write({
+                'stage_id': complete_stage_id,
+            })
 
     @api.onchange('date_deadline')
     def onchange_date_deadline(self):
@@ -89,17 +92,17 @@ class Todo(models.Model):
 
     @api.model
     def notify_before_dead_dateline(self):
-        today = fields.Date.today()
-        notification_day = int(self.env['ir.config_parameter'].sudo().get_param('todo_app.todo_notify_before_deadline'))
-        print(notification_day)
-
-        if notification_day <= 0:
-            raise UserError('Notification day must be greater than 0')
-        
-        notify_date = today - timedelta(days=notification_day)
-        todos = self.search([('date_deadline','<=',notify_date),('date_deadline','>=',today)])
+        print("Notifying user about date deadline ======>")
+        date_today = fields.Date.today()
+        notify_days_before = int(self.env['ir.config_parameter'].sudo().get_param('todo_app.todo_notify_before_deadline'))
+        date_after_days = date_today + timedelta(days=notify_days_before)
+        todos = self.search([('date_deadline', '<=', date_after_days), ('date_deadline', '>=', date_today)])
         for rec in todos:
-            rec.message_post(body=f"Reminder: Deadline for {rec.name} is approaching.",partner_ids = rec.user_id.partner_id.ids)
+            rec.message_post(
+                body=f'Todo {rec.name} is about to expire.',
+                partner_ids=rec.user_id.partner_id.ids
+            )
+
         
     
     @api.model
@@ -115,6 +118,12 @@ class Todo(models.Model):
                     'active': False,
                     })
 
+    # @api.model
+    # def _notify_date_deadline(self):
+    #     print("Notifying user about date deadline ======>")
+    #     todos = self.search([])
+    #     for rec in todos:
+            rec.message_post(body=f"Reminder: Deadline for {rec.name} is approaching.",partner_ids = rec.user_id.partner_id.ids)
 
 
 class TodoTask(models.Model):

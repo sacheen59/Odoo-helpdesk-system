@@ -36,6 +36,7 @@
 
         'views/helpdesk_portal_templates.xml',
         'views/helpdesk_portal_received_form_templates.xml',
+        'views/helpdesk_website_support_menu.xml',
 
         'views/views.xml',
         'views/templates.xml',
@@ -51,5 +52,6 @@
     'demo': [
         'demo/demo.xml',
     ],
+    'images': ['static/description/icon.png',],
 }
 

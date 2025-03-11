@@ -176,7 +176,12 @@ class HelpdeskTickets(models.Model):
         """
 
         ticket =  super().create(vals_list)
+        if ticket.type == 'external':
+            ticket._notify_manager()
+        
         ticket._notify_team()
+
+        
         return ticket
 
     # send notification assigned team is updated
@@ -234,6 +239,23 @@ class HelpdeskTickets(models.Model):
                     body='You have been assigned a new ticket. Please complete the ticket as soon as possible.',
                     partner_ids=receipents
                 )
+
+
+    def _notify_manager(self):
+        """
+        Notify the managers of the helpdesk when ever ticket is created.
+        """
+        managers = self.env['res.users'].search([('groups_id', 'in', self.env.ref('helpdesk_app.group_helpdesk_manager').id)])
+        if not managers:
+            return
+        message_body = "New Query from external user. Please try to resolve it as soon as possible."
+        self.message_post(
+            body = message_body,
+            subject='New External Ticket Created',
+            message_type = 'notification',
+            partner_ids=managers.mapped('partner_id').ids
+        )
+
     # notify team member end 
 
 class TicketsTag(models.Model):
@@ -337,27 +359,6 @@ class HelpdeskTeam(models.Model):
         if self.team_leader and self.team_leader.id not in self.team_members.ids:
             self.team_leader = False
 
-    @api.model_create_multi
-    def create(self,vals):
-        team = super().create(vals)
-        if team.team_leader:
-            team._assign_todo_manager_role(team.team_leader)
-        return team
-    
-    def write(self,vals):
-        res = super().write(vals)
-        if 'team_leader' in vals:
-            for team in self:
-                team._assign_todo_manager_role(team.team_leader)
-        return res
-    
-    def _assign_todo_manager_role(self, user):
-        if user:
-            todo_manager_group = self.env.ref('todo_app.group_todo_manager', raise_if_not_found=False)
-            if todo_manager_group and user:
-                user.write({
-                    'groups_id': [(4, todo_manager_group.id)]
-                })
 
 
 class HelpdeskTicketStage(models.Model):

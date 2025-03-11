@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="base.res_config_settings_view_form" />
         <field name="arch" type="xml">
             <xpath expr="//form" position="inside">
-                <app data-string="Todo App" string="TODO" name="todo app">
+                <app data-string="Todo App" string="TODO" name="todo_app" data-key="todo_app">
                     <block title="Todo">
                         <setting
                             help="Define whether the completed todo is automatically archieve or not">
@@ -29,7 +29,7 @@
         <field name="view_id" ref="res_config_settings_inherit_todo_app_view_form" />
         <field name="view_mode">form</field>
         <field name="target">inline</field>
-        <field name="context">{'module' : 'todo_app'}</field>
+        <field name="context">{'module' : 'todo_app','bin_size': False}</field>
     </record>
 
 </odoo>

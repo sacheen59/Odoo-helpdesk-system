@@ -58,7 +58,7 @@
             <field name="name">All Todos</field>
             <field ref="model_helpdesk_app_tickets" name="model_id" />
             <field name="domain_force">
-                ['|',('reported_by','=',user.partner_id.id),('reported_by','!=',user.partner_id.id)]</field>
+                ['|',('reported_by','=',user.partner_id.id),('reported_by','=',user.partner_id.id)]</field>
             <field name="groups" eval="[(4, ref('helpdesk_app.group_helpdesk_manager'))]" />
             <field name="perm_create" eval="True" />
             <field name="perm_unlink" eval="False" />
