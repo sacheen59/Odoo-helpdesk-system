@@ -333,6 +333,52 @@ class HelpdeskTeam(models.Model):
     team_leader = fields.Many2one('res.users', string='Team Leader',ondelete = "cascade")
     team_members = fields.Many2many('res.users', 'helpdesk_app_team_members_rel', column1='team_id', column2='user_id', string='Team Members')
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super().create(vals_list)
+        if res.team_leader:
+            res.assign_helpdesk_leader_role(res.team_leader)
+        return res
+    
+    def write(self,vals):
+        previous_team_leader = {record.id: record.team_leader for record in self}
+        res = super().write(vals)
+        for record in self:
+            new_team_leader = record.team_leader
+            previous_team_leader = previous_team_leader.get(record.id)
+            if new_team_leader:
+                record.assign_helpdesk_leader_role(new_team_leader)
+            
+            if previous_team_leader and previous_team_leader != new_team_leader:
+                record.remove_helpdesk_leader_role(previous_team_leader)
+        return res
+    
+    def assign_helpdesk_leader_role(self,user):
+        """
+        Assign the 'Hepdesk Leader' role to a specified user.
+
+        This method checks if the user exists and then assigns them to the 'Helpdesk Leader' group.
+        """
+
+        if user:
+            helpdesk_leader_group = self.env.ref('helpdesk_app.group_helpdesk_team_leader',raise_if_not_found=False)
+            if helpdesk_leader_group:
+                user.write({'groups_id': [(4, helpdesk_leader_group.id)]})
+
+    def remove_helpdesk_leader_role(self,user):
+        """
+        Remove the 'Helpdesk Leader' role from a specified user.
+
+        This method checks if the user exists and then removes them from the 'Helpdesk Leader' and Todo leader group.
+        """
+
+        if user:
+            helpdesk_leader_group = self.env.ref('helpdesk_app.group_helpdesk_team_leader',raise_if_not_found=False)
+            todo_leader_role = self.env.ref('todo_app.group_hepdesk_todo_leader',raise_if_not_found=False)
+            if helpdesk_leader_group:
+                user.write({'groups_id': [(3, helpdesk_leader_group.id)]})
+                user.write({'groups_id': [(3, todo_leader_role.id)]})
+
     @api.onchange('team_leader')
     def _onchange_team_leader(self):
 

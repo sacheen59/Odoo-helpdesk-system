@@ -61,6 +61,7 @@
                         <group>
                             <field name="category_id"
                                 readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />
+                            <field name = "leader_id" />
                             <field name="user_id"
                                 options="{'no_create' : True, 'no_edit': True}"
                                 readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />

@@ -5,6 +5,11 @@ import random
 
 # todo cateogry model
 class TodoCategory(models.Model):
+
+    """
+    Models for Todo Category
+    """
+
     _name = 'todo_app.todo.category'
     _description = 'Todo Category'
     _rec_name = "title"
@@ -13,6 +18,12 @@ class TodoCategory(models.Model):
     description = fields.Text("Description")
 
 class Todo(models.Model):
+    """
+    Models for actual Todo
+
+    This is the Todo model which have different table field and their methods
+    """
+
     _name = 'todo_app.todo'
     _inherit = ['mail.thread','mail.activity.mixin']
     _description = 'Todo Management'
@@ -30,6 +41,7 @@ class Todo(models.Model):
     stage_id = fields.Many2one('todo_app.todo.stage', string='Stages', group_expand='_read_group_stage_id',default = lambda self: self._default_stage(), tracking=True)
     stage_name = fields.Char(related='stage_id.name', string='Stage Name', readonly=True)
     user_id = fields.Many2one("res.users",string="Assigned To",tracking=True)
+    leader_id = fields.Many2one("res.users",string="Leader")
     task_ids = fields.One2many("todo_app.todo.task","todo_id",string="Tasks",tracking=True)
     tag_ids = fields.Many2many("todo_app.todo.tag",string="Tags",tracking=True)
 

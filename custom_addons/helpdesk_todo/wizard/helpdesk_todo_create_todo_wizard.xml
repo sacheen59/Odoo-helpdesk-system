@@ -6,6 +6,7 @@
             <form string="Send Ticket">
                 <field name="ticket_id" invisible='1' />
                 <field name="todo_id" invisible='1' />
+                <field name="leader_id" invisible='1' />
                 <group>
                     <field name="ticket_name" />
                     <field name="ticket_description" />

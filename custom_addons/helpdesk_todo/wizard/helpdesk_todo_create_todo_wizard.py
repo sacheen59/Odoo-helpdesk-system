@@ -22,55 +22,8 @@ class HelpdeskTodoCreateTodoWizard(models.TransientModel):
     ticket_query = fields.Text('Query')
     ticket_description = fields.Text('Description')
     tags_ids = fields.Many2many('helpdesk_app.tickets.tag', string='Tags')
-    leader_id = fields.Many2one('res.users', string="Leader" ,tracking=True)
-
-
-
-    @api.model_create_multi
-    def create(self, vals_list: list[dict]):
-
-        """
-        Create a new record and assign the 'To-Do Manager' role to the leader if specified.
-
-        This method overrides the default `create` method to ensure that whenever a new 
-        record is created and a leader is assigned (`leader_id`), the leader is granted 
-        the 'To-Do Manager' role.
-
-        """
-        record =  super().create(vals_list)
-        if record.leader_id:
-            record.assign_todo_manager_role(record.leader_id)
-        return record
+    leader_id = fields.Many2one('res.users', string="Leader")
     
-    def write(self,vals):
-
-        """
-        Update an existing record and assign the 'To-Do Manager' role if the leader is changed.
-
-        This method overrides the default `write` method to check if the `leader_id` field is updated.
-        If a new leader is assigned, the method ensures that they receive the 'To-Do Manager' role.
-        """
-
-        res = super().write(vals)
-
-        leader_id = vals.get('leader_id')
-        if leader_id:
-            for record in self:
-                record.assign_todo_manager_role(record.leader_id)
-        return res
-
-
-    def assign_todo_manager_role(self,user):
-        """
-        Assign the 'To-Do Manager' role to a specified user.
-
-        This method checks if the user exists and then assigns them to the 'To-Do Manager' group.
-        """
-
-        if user:
-            todo_manager_group = self.env.ref('todo_app.group_todo_manager',raise_if_not_found=False)
-            if todo_manager_group:
-                user.write({'groups_id': [(4, todo_manager_group.id)]})
 
 
     @api.model
@@ -122,7 +75,8 @@ class HelpdeskTodoCreateTodoWizard(models.TransientModel):
             'description': self.ticket_query,
             'full_description': self.ticket_description,
             'stage_id': self.env.ref('todo_app.stage_1').id,
-            'user_id': self.user_id.id
+            'user_id': self.user_id.id,
+            'leader_id': self.leader_id.id
 
         })
 
