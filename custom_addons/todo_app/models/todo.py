@@ -29,8 +29,9 @@ class Todo(models.Model):
     _description = 'Todo Management'
     _order= "sequence asc, id desc"
 
+    name = fields.Char(string="Todo Reference", required=True, copy = False, readonly=False,index = "trigram",default=lambda self: ('New'))
+    title = fields.Char(string="Title", required=True)
     sequence = fields.Integer("Sequence",default=1, help="Gives the sequence order when displaying a list of todos.")
-    name = fields.Char(string="Name", required=True,tracking=True)
     description = fields.Text("Brief Description",tracking=True)
     full_description = fields.Html("Full Description")
     date_deadline = fields.Date("Deadline",tracking=True)
@@ -44,6 +45,13 @@ class Todo(models.Model):
     leader_id = fields.Many2one("res.users",string="Leader")
     task_ids = fields.One2many("todo_app.todo.task","todo_id",string="Tasks",tracking=True)
     tag_ids = fields.Many2many("todo_app.todo.tag",string="Tags",tracking=True)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('name', ('New')) == ('New'):
+                vals['name'] = self.env['ir.sequence'].next_by_code('todo_app.todo') or ('New')
+        return super().create(vals_list)
 
     def _default_stage(self):
         return self.env['todo_app.todo.stage'].search([],order="sequence asc", limit=1).id
@@ -104,7 +112,6 @@ class Todo(models.Model):
 
     @api.model
     def notify_before_dead_dateline(self):
-        print("Notifying user about date deadline ======>")
         date_today = fields.Date.today()
         notify_days_before = int(self.env['ir.config_parameter'].sudo().get_param('todo_app.todo_notify_before_deadline'))
         date_after_days = date_today + timedelta(days=notify_days_before)
@@ -115,27 +122,6 @@ class Todo(models.Model):
                 partner_ids=rec.user_id.partner_id.ids
             )
 
-        
-    
-    @api.model
-    def auto_archive(self):
-        is_archived = self.env['ir.config_parameter'].sudo().get_param('todo_app.todo_auto_archive') == "True" #True
-        print("is Archived ====> ",is_archived)
-        is_complete_stage = self.env.ref('todo_app.stage_4').id
-        todos = self.search([('active','=',True)])
-        if is_archived:
-            for rec in todos:
-                if rec.stage_id.id == is_complete_stage:
-                    rec.write({
-                    'active': False,
-                    })
-
-    # @api.model
-    # def _notify_date_deadline(self):
-    #     print("Notifying user about date deadline ======>")
-    #     todos = self.search([])
-    #     for rec in todos:
-            rec.message_post(body=f"Reminder: Deadline for {rec.name} is approaching.",partner_ids = rec.user_id.partner_id.ids)
 
 
 class TodoTask(models.Model):

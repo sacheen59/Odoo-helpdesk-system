@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate='0'>
+    <record model="crm.stage" id="stage_lead5" forcecreate="False">
+        <field name="name">Lost</field>
+        <field name="sequence">80</field>
+    </record>
+</odoo>

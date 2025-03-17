@@ -10,10 +10,6 @@
                 <app data-string="Todo App" string="TODO" name="todo_app" data-key="todo_app">
                     <block title="Todo">
                         <setting
-                            help="Define whether the completed todo is automatically archieve or not">
-                            <field name="todo_auto_archive" />
-                        </setting>
-                        <setting
                             help="Notify Before the given deadline">
                             <field name="todo_notify_before_deadline" />
                         </setting>

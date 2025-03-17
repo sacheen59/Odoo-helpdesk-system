@@ -54,14 +54,15 @@
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="Enter Todo Name"
-                                readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />
+                                readonly="1" string="Number" />
                         </h1>
                     </div>
                     <group>
                         <group>
+                            <field name="title"
+                                readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />
                             <field name="category_id"
                                 readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />
-                            <field name = "leader_id" />
                             <field name="user_id"
                                 options="{'no_create' : True, 'no_edit': True}"
                                 readonly="stage_name == 'Completed' or stage_name == 'Cancelled'" />

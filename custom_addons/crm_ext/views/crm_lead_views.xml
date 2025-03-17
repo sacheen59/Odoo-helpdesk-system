@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_crm_lead_form_custom" model="ir.ui.view">
+        <field name="name">crm.lead.form.custom</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//widget[@name='web_ribbon']" position="attributes">
+                <attribute name="invisible">is_visible == True</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(crm.action_crm_lead2opportunity_partner)d']"
+                position="replace">
+                <button name="action_custom_convert_to_opportunity"
+                    string="Convert to Opportunity" type="object"
+                    class="oe_highlight"
+                    invisible="type == 'opportunity' or not active" />
+            </xpath>
+            <xpath expr="//button[@name='action_set_won_rainbowman']" position="before">
+                <button string="Restore" name="action_restore" type="object"
+                    class="oe_highlight" data-hotkey="q"
+                    title="Restore the lead as an opportunity"
+                    invisible="is_visible == True" />
+            </xpath>
+
+            <xpath expr="//button[@name='%(crm.crm_lead_lost_action)d']" position="attributes">
+                <attribute name="invisible">is_visible == False or type=='lead'</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_set_won_rainbowman']" position="attributes">
+                <attribute name="invisible">is_visible == False or type == 'lead'</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

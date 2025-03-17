@@ -29,6 +29,7 @@
         'report/ir_actions_report.xml',
 
         'data/helpdesk_ticket_stage.xml',
+        'data/ir_sequence_data.xml',
 
         'wizard/ticket_stage_remark_wizard.xml',
         'wizard/helpdesk_report_open_wizard.xml',

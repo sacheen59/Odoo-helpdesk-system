@@ -27,6 +27,7 @@
 
         'data/todo_stage_data.xml',
         'data/ir_cron_data.xml',
+        'data/ir_sequence_data.xml',
 
         'wizard/task_mark_complete_wizard.xml',
 

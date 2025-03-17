@@ -32,8 +32,9 @@ class HelpdeskTickets(models.Model):
     _name = 'helpdesk_app.tickets'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Helpdesk Tickets'
-    _rec_name = 'title'
+    _rec_name = 'name'
     
+    name = fields.Char(string="Ticket Reference", required=True, copy = False, readonly=False,index = "trigram",default=lambda self: ('New'))
     title = fields.Char(string='Title', required=True, tracking=True)
     email = fields.Char(string="Email", required=True, tracking=True)
     phone = fields.Char(string="Phone", required=True, tracking=True)
@@ -175,7 +176,12 @@ class HelpdeskTickets(models.Model):
         :rtype: recordset
         """
 
+        for vals in vals_list:
+            if vals.get('name', ('New')) == ('New'):
+                vals['name'] = self.env['ir.sequence'].next_by_code('helpdesk_app.tickets') or ('New')
+
         ticket =  super().create(vals_list)
+        
         if ticket.type == 'external':
             ticket._notify_manager()
         
