@@ -29,6 +29,7 @@ Long description of module's purpose
         'views/views.xml',
         'views/templates.xml',
         'views/sale_order_views.xml',
+        'views/sale_order_quotation_tree_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

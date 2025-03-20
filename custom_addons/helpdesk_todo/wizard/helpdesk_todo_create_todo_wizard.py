@@ -71,7 +71,7 @@ class HelpdeskTodoCreateTodoWizard(models.TransientModel):
             'stage_id': self.env.ref('helpdesk_app.stage_2').id,
         })
         todo = self.env['todo_app.todo'].create({
-            'name': self.ticket_name,
+            'title': self.ticket_name,
             'description': self.ticket_query,
             'full_description': self.ticket_description,
             'stage_id': self.env.ref('todo_app.stage_1').id,

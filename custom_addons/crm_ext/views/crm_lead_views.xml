@@ -34,6 +34,9 @@
                     is_visible == False or type=='lead' or stage_name == 'Won'
                 </attribute>
             </xpath>
+            <xpath expr="(//button[@name='%(crm.crm_lead_lost_action)d'])[2]" position="attributes">
+                <attribute name="invisible"> type == 'opportunity' or probability == 0 and not active or is_visible == False </attribute>
+            </xpath>
             <xpath expr="//button[@name='action_set_won_rainbowman']" position="attributes">
                 <attribute name="invisible">
                     is_visible == False or type == 'lead' or stage_name =='Won'

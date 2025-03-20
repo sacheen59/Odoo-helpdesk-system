@@ -58,12 +58,14 @@
             <!-- default statusbar visibilty -->
             <xpath
                 expr="//field[@name='state']" position="attributes">
-                <attribute name="invisible">1</attribute>
+                <attribute name="invisible">
+                is_visible == False and states != 'draft' and states in ['send_to_approve','approved']
+                </attribute>
             </xpath>
 
             <xpath
                 expr="//field[@name='state']" position="after">
-                <field name="states" widget="statusbar"
+                <field name="states" widget="statusbar" invisible="is_visible == True or states not in ['send_to_approve','approved']"
                     statusbar_visibility="draft,send_to_approve,approved,sale,sent,cancelled" />
             </xpath>
 
