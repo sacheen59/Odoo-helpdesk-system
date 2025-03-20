@@ -175,9 +175,8 @@ class HelpdeskTickets(models.Model):
         :return: The created ticket records.
         :rtype: recordset
         """
-
         for vals in vals_list:
-            if vals.get('name', ('New')) == ('New'):
+            if vals.get('name', 'New') == 'New':
                 vals['name'] = self.env['ir.sequence'].next_by_code('helpdesk_app.tickets') or ('New')
 
         ticket =  super().create(vals_list)
@@ -205,7 +204,6 @@ class HelpdeskTickets(models.Model):
         :return: The result of the parent class's write method, indicating whether the update was successful.
         :rtype: bool
         """
-
         res = super().write(vals)
         assigned_team_changed = vals.get('assigned_team') != self.assigned_team.id
         assigned_team_member_changed = vals.get('assigned_team_id') != self.assigned_team_id.id
