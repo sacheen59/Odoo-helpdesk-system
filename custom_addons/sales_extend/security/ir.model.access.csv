@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+sales_extend.access_sale_order_approve_remark_wizard,access_sale_order_approve_remark_wizard,sales_extend.model_sale_order_approve_remark_wizard,base.group_user,1,1,1,1

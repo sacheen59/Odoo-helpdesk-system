@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_sale_order_form_custom" model="ir.ui.view">
+        <field name="name">sale.order.form.custom</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <!-- send by email invisible -->
+            <xpath expr="//button[@id='send_by_email_primary']"
+                position="attributes">
+                <attribute name="invisible">states not in ['draft','approved'] or is_visible == True </attribute>
+            </xpath>
+
+
+            <!-- reject button -->
+            <xpath
+                expr="//button[@name='action_quotation_send']" position="after">
+                <button name="action_open_ticket_stage_remark_wizard" class="oe_highlight"
+                    type="object" string="Reject"
+                    invisible="states != 'send_to_approve'"
+                    groups="sales_team.group_sale_manager" context="{'status': 'Rejected'}" />
+            </xpath>
+
+            <!-- approve button -->
+            <xpath
+                expr="//button[@name='action_quotation_send']" position="after">
+                <button name="action_open_ticket_stage_remark_wizard" class="oe_highlight"
+                    type="object" string="Approve"
+                    context="{'status': 'Approved'}"
+                    invisible="states != 'send_to_approve'"
+                    groups="sales_team.group_sale_manager" />
+            </xpath>
+
+            <!-- send for approval -->
+            <xpath
+                expr="//button[@name='action_quotation_send']" position="after">
+                <button name="action_send_to_approve" class="oe_highlight" type="object"
+                    string="Send for Approval"
+                    groups="sales_team.group_sale_salesman"
+                    invisible="states != 'draft' or is_visible == False" />
+            </xpath>
+
+            <!-- confirm button invisible  -->
+            <xpath
+                expr="(//button[@name='action_confirm'])[2]"
+                position="attributes">
+                <attribute name="invisible">
+                    states == 'send_to_approve' or states=='sale' or states == 'cancel' or is_visible == True 
+                </attribute>
+            </xpath>
+
+            <xpath expr="(//button[@name='action_confirm'])[1]"
+                position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- default statusbar visibilty -->
+            <xpath
+                expr="//field[@name='state']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath
+                expr="//field[@name='state']" position="after">
+                <field name="states" widget="statusbar"
+                    statusbar_visibility="draft,send_to_approve,approved,sale,sent,cancelled" />
+            </xpath>
+
+
+            <!-- approve remarks tab  -->
+            <xpath
+                expr="//page[@name='customer_signature']" position="after">
+                <page string="Approval Remarks" name="approval_remarks">
+                    <field name="remarks_ids" readonly="1">
+                        <list string="Remarks">
+                            <field name="remarks" />
+                            <field name="remarks_file" widget="binary" />
+                            <field name="status" />
+                        </list>
+                    </field>
+                </page>
+
+            </xpath>
+
+            <!-- make readonly of order line when states is approved -->
+            <xpath
+                expr="//field[@name='order_line']" position="attributes">
+                <attribute name="readonly">states == 'approved'</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

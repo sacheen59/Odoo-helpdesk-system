@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 class CRMLead(models.Model):
     _inherit = 'crm.lead'
 
     is_visible = fields.Boolean(compute='_compute_hide_restore_button')
     old_stage_id = fields.Many2one('crm.stage', string='Old Stage')
+    stage_name = fields.Char(related='stage_id.name', string='Stage Name')
 
     @api.depends('stage_id')
     def _compute_hide_restore_button(self):
@@ -21,13 +21,14 @@ class CRMLead(models.Model):
     def action_custom_convert_to_opportunity(self):
         return super(CRMLead, self).convert_opportunity(None)
     
-
+    @api.model
     def action_set_lost(self,**addtional_values):
+        lost_stage_id = self.env.ref('crm_ext.stage_lead5' ,raise_if_not_found=False)
+        for rec in self:
+            rec.old_stage_id = rec.stage_id.id
         res = super(CRMLead, self).action_set_lost(**addtional_values)
-        lost_stage_id = self.env.ref('crm_ext.stage_lead5').id
-        self.old_stage_id = self.stage_id
         self.write({
-            'stage_id': lost_stage_id,
+            'stage_id': lost_stage_id.id,
             'active': True,
         })
         return res
@@ -40,7 +41,7 @@ class CRMLead(models.Model):
                 'email': self.email_from,
             })
         self.partner_id = partner_id.id
-        self.convert_opportunity(partner_id)
+        # self.convert_opportunity(partner_id)
         return super(CRMLead, self).action_set_won_rainbowman()
     
 

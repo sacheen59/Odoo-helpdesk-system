@@ -10,12 +10,18 @@
                 <attribute name="invisible">is_visible == True</attribute>
             </xpath>
             <xpath expr="//button[@name='%(crm.action_crm_lead2opportunity_partner)d']"
-                position="replace">
+                position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(crm.action_crm_lead2opportunity_partner)d']"
+                position="after">
                 <button name="action_custom_convert_to_opportunity"
                     string="Convert to Opportunity" type="object"
                     class="oe_highlight"
                     invisible="type == 'opportunity' or not active" />
+
             </xpath>
+
             <xpath expr="//button[@name='action_set_won_rainbowman']" position="before">
                 <button string="Restore" name="action_restore" type="object"
                     class="oe_highlight" data-hotkey="q"
@@ -24,10 +30,14 @@
             </xpath>
 
             <xpath expr="//button[@name='%(crm.crm_lead_lost_action)d']" position="attributes">
-                <attribute name="invisible">is_visible == False or type=='lead'</attribute>
+                <attribute name="invisible">
+                    is_visible == False or type=='lead' or stage_name == 'Won'
+                </attribute>
             </xpath>
             <xpath expr="//button[@name='action_set_won_rainbowman']" position="attributes">
-                <attribute name="invisible">is_visible == False or type == 'lead'</attribute>
+                <attribute name="invisible">
+                    is_visible == False or type == 'lead' or stage_name =='Won'
+                </attribute>
             </xpath>
         </field>
     </record>
