@@ -46,7 +46,7 @@
                 expr="(//button[@name='action_confirm'])[2]"
                 position="attributes">
                 <attribute name="invisible">
-                    states == 'send_to_approve' or states=='sale' or states == 'cancel' or is_visible == True 
+                    states == 'send_to_approve' or states=='sale' or states == 'cancel' or is_visible == True
                 </attribute>
             </xpath>
 
@@ -86,7 +86,7 @@
             <!-- make readonly of order line when states is approved -->
             <xpath
                 expr="//field[@name='order_line']" position="attributes">
-                <attribute name="readonly">states == 'approved'</attribute>
+                <attribute name="readonly">is_orderline_readonly == True</attribute>
             </xpath>
         </field>
     </record>

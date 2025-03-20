@@ -32,6 +32,7 @@ class SaleOrder(models.Model):
     )
     remarks_ids = fields.One2many('sale.order.approve.remark.wizard', 'sale_order_id', string='Remarks')
     is_visible = fields.Boolean("Is visible", compute="_compute_is_visible")
+    is_orderline_readonly = fields.Boolean("Is Orderline Read Only", compute="_compute_is_orderline_readonly")
 
     
 
@@ -43,9 +44,17 @@ class SaleOrder(models.Model):
                 rec.is_visible = False
             else:
                 rec.is_visible = any(
-                    line.price_unit < line.product_id.list_price and rec.states == 'draft'
-                    for line in rec.order_line
+                    product.price_unit < product.product_id.list_price and rec.states == 'draft'
+                    for product in rec.order_line
                 )
+
+    @api.depends('states')
+    def _compute_is_orderline_readonly(self):
+        for rec in self:
+            if rec.states == 'approved' and self.env.user.id not in self.env.ref('sales_team.group_sale_manager').users.mapped('id'):
+                rec.is_orderline_readonly = True
+            else:
+                rec.is_orderline_readonly = False
 
 
 
@@ -68,7 +77,7 @@ class SaleOrder(models.Model):
         
         return False
     
-    
+
     @check_orderline_presence
     def action_confirm(self):
         res = super(SaleOrder, self).action_confirm()
